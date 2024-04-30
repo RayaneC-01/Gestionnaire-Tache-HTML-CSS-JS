@@ -1,3 +1,10 @@
+let dueDateSelect = document.getElementById('due_date_select');
+let customDateInput = document.getElementById('custom_due_date');
+
+dueDateSelect.addEventListener('change', function () {
+    customDateInput.style.display = (this.value === 'choose_date') ? 'block' : 'none';
+});
+
 // Fonction pour ajouter une nouvelle tâche
 function addTask() {
     var taskInput = document.getElementById("taskInput");
@@ -128,3 +135,4 @@ function loadTasks() {
 }
 // Appeler loadTasks au chargement de la page
 window.onload = loadTasks;
+
