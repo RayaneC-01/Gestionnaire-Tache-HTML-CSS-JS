@@ -1,45 +1,32 @@
-let dueDateSelect = document.getElementById('due_date_select');
-let customDateInput = document.getElementById('custom_due_date');
-
-dueDateSelect.addEventListener('change', function () {
-    customDateInput.style.display = (this.value === 'choose_date') ? 'block' : 'none';
-});
-
 // Fonction pour ajouter une nouvelle tâche
 function addTask() {
-    var taskInput = document.getElementById("taskInput");
-    var taskText = taskInput.value.trim();
+    let taskInput = document.getElementById("taskInput");
+    let taskText = taskInput.value.trim();
 
-    var priorityInput = document.getElementById("priorityInput");
-    var priorityValue = parseInt(priorityInput.value.trim());
+    let priorityInput = document.getElementById("priorityInput");
+    let priorityValue = parseInt(priorityInput.value.trim());
 
-    var reminderInput = document.getElementById("reminderInput");
-    var reminderValue = reminderInput.value;
-
-    var customDateInput = document.getElementById("customDateInput");
-    var customDateValue = customDateInput.value;
-
-    var errorMessage = document.getElementById("errorMessage");
+    let errorMessage = document.getElementById("errorMessage");
 
     if (taskText !== "" && priorityValue >= 1 && priorityValue <= 4) {
         errorMessage.textContent = ""; // Effacer le message d'erreur précédent
 
-        var taskListItem = document.createElement("li");
+        let taskListItem = document.createElement("li");
         taskListItem.classList.add("task", "task-" + priorityValue);
 
-        var checkbox = document.createElement("input");
+        let checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.addEventListener("change", function () {
             taskListItem.classList.toggle("completed");
         });
 
-        var taskTextElement = document.createElement("span");
+        let taskTextElement = document.createElement("span");
         taskTextElement.textContent = taskText;
 
-        var priorityTextElement = document.createElement("span");
+        let priorityTextElement = document.createElement("span");
         priorityTextElement.textContent = "Priority: " + priorityValue;
 
-        var deleteButton = document.createElement("button"); // Bouton de suppression
+        let deleteButton = document.createElement("button"); // Bouton de suppression
         deleteButton.textContent = "Supprimer";
         deleteButton.classList.add("btn", "btn-danger", "ml-2");
         deleteButton.onclick = function () {
@@ -52,7 +39,7 @@ function addTask() {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Oui, supprimer!',
                 cancelButtonText: 'Annuler'
-            }).then((result) => {
+            }).then(function (result) {
                 if (result.isConfirmed) {
                     taskListItem.remove(); // Supprimer l'élément de la liste
                     saveTasks(); // Sauvegarder les tâches mises à jour
@@ -64,22 +51,17 @@ function addTask() {
                 }
             });
         };
-        var reminderTextElement = document.createElement("span");
-        reminderTextElement.textContent = "Rappel: " + getReminderText(reminderValue, customDateValue);
         console.log(taskInput);
         taskListItem.appendChild(checkbox);
         taskListItem.appendChild(taskTextElement);
         taskListItem.appendChild(priorityTextElement);
-        taskListItem.appendChild(reminderTextElement);
         taskListItem.appendChild(deleteButton); // Ajouter le bouton de suppression
-        var taskList = document.getElementById("taskList");
+        let taskList = document.getElementById("taskList");
         taskList.appendChild(taskListItem);
 
         // Nettoyer les champs de saisie après l'ajout de la tâche
         taskInput.value = "";
         priorityInput.value = "";
-        reminderInput.value = "today"; // Réinitialiser la sélection à "Aujourd'hui"
-        customDateInput.value = ""; // Réinitialiser la date personnalisée
 
         saveTasks();
     } else {
@@ -87,45 +69,19 @@ function addTask() {
     }
 }
 
-function getReminderText(reminderValue, customDateValue) {
-    switch (reminderValue) {
-        case "today":
-            return "Aujourd'hui";
-        case "tomorrow":
-            return "Demain";
-        case "2weeks":
-            return "Dans 2 semaines";
-        case "choose_date":
-            return customDateValue ? customDateValue : "Date personnalisée";
-        default:
-            return "";
-    }
-}
-
-// Fonction pour afficher ou masquer l'entrée de date personnalisée en fonction de la sélection de l'utilisateur
-document.getElementById("reminderInput").addEventListener("change", function () {
-    var customDateInput = document.getElementById("customDateInput");
-    var reminderValue = this.value;
-    customDateInput.classList.toggle("d-none", reminderValue !== "custom");
-});
-
-
-
 // Fonction pour sauvegarder les tâches dans le LocalStorage
 function saveTasks() {
-    var taskList = document.getElementById("taskList").innerHTML;
+    let taskList = document.getElementById("taskList").innerHTML;
     try {
         localStorage.setItem("taskList", taskList);
     } catch (error) {
         console.error("Erreur lors de la sauvegarde des tâches:", error);
     }
 }
-
-// Fonction pour charger les tâches depuis le LocalStorage
 // Fonction pour charger les tâches depuis le LocalStorage
 function loadTasks() {
     try {
-        var taskList = localStorage.getItem("taskList");
+        let taskList = localStorage.getItem("taskList");
         if (taskList) {
             document.getElementById("taskList").innerHTML = taskList;
         }
